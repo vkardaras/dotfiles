@@ -38,5 +38,9 @@ $ cd dotfiles
 then use GNU stow to create symlinks
 
 ```bash
-$ stow .
+# install symlink of a specific package
+$ stow tmux
+
+# install symlinks of all packages
+$ stow */
 ```
