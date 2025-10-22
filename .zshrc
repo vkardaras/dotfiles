@@ -13,7 +13,7 @@ compinit
 # enable starship prompt
 eval "$(starship init zsh)"
 
-export XDG_CONFIG_HOME="$HOME/.config/"
+export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/doom_emacs/bin:$PATH"
 # load optionrc if it exists
 [ -f "${XDG_CONFIG_HOME}/zsh/optionrc" ] && source "${XDG_CONFIG_HOME}/zsh/optionrc"

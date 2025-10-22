@@ -17,7 +17,6 @@ config.color_scheme = 'tokyonight_night'
 config.hide_tab_bar_if_only_one_tab = true
 config.automatically_reload_config = true
 config.window_close_confirmation = "NeverPrompt"
-config.default_cursor_style = "BlinkingBar"
 
 -- Finally, return the configuration to wezterm:
 return config
