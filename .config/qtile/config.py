@@ -203,16 +203,16 @@ screens = [
                     padding = 2,
                     fontsize = 14
                 ),
-                widget.LaunchBar(
-                    progs = [("🦁", "brave", "Brave web browser"),
-                            ("🚀", "wezterm", "Wezterm terminal"),
-                            ("📁", "thunar", "Thunar file manager"),
-                            ("🎸", "vlc", "VLC media player")
-                            ], 
-                    fontsize = 12,
-                    padding = 4,
-                    foreground = colors[3],
-                ),
+                # widget.LaunchBar(
+                #     progs = [("🦁", "brave", "Brave web browser"),
+                #             ("🚀", "wezterm", "Wezterm terminal"),
+                #             ("📁", "thunar", "Thunar file manager"),
+                #             ("🎸", "vlc", "VLC media player")
+                #             ], 
+                #     fontsize = 12,
+                #     padding = 4,
+                #     foreground = colors[3],
+                # ),
                 widget.TextBox(
                     text = '|',
                     font = "Ubuntu Mono",
@@ -278,9 +278,10 @@ screens = [
                     fmt = '󰋊  Disk: {}',
                     visible_on_warn = False,
                 ),
-                widget.Pomodoro(),
+                # widget.Pomodoro(),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
+                widget.Redshift(temperature=2200),
                 widget.Volume(
                     foreground = colors[7],
                     padding = 8, 
@@ -290,7 +291,6 @@ screens = [
                     foreground = colors[1],
                     configured_keyboards=['us', 'gr'], # + potentially more if you want
                 ),
-                widget.Redshift(temperature=2200),
                 widget.Clock(
                     foreground = colors[8],
                     padding = 8, 
