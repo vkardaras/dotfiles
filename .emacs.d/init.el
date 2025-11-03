@@ -267,7 +267,13 @@ The DWIM behaviour of this command is as follows:
   "f" 'find-file
   "b" my-test-prefix-buffer-map
   "d" 'dired
+  "h" help-map
   "t" 'test-command)
 
 ;; Define a key binding
 (keymap-set global-map "C-SPC" my-test-prefix-map)
+
+;; Set value for sub-keymap in which key
+(which-key-add-keymap-based-replacements my-test-prefix-map
+  "b" `("Buffer" . ,my-test-prefix-buffer-map)
+  "h" `("Help" . ,help-map))

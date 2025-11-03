@@ -31,7 +31,14 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from libqtile import hook
 import colors
+
+# AUTOSTART
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.call(home)
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -281,11 +288,11 @@ screens = [
                 # widget.Pomodoro(),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Redshift(temperature=2200),
+                widget.Redshift(temperature=3000),
                 widget.Volume(
                     foreground = colors[7],
                     padding = 8, 
-                    fmt = '  Vol: {}',
+                    fmt = '  {}',
                 ),
                 widget.KeyboardLayout(
                     foreground = colors[1],
