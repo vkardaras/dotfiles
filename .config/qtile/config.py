@@ -34,12 +34,6 @@ from libqtile.utils import guess_terminal
 from libqtile import hook
 import colors
 
-# AUTOSTART
-@hook.subscribe.startup_once
-def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
-    subprocess.call(home)
-
 mod = "mod4"
 terminal = guess_terminal()
 theme = "material"
@@ -79,6 +73,7 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "a", lazy.spawn(f"rofi -show drun -theme {theme}"), desc="Run Launcher"),
     Key([mod, "shift"], "a", lazy.spawn(f"rofi -show window -theme {theme}"), desc="Run Launcher"),
+    Key([mod], "b", lazy.spawn("feh --bg-fill --randomize ~/Pictures/wallpaper/", shell=True), desc="Change background"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
@@ -374,3 +369,9 @@ wl_xcursor_size = 24
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+# AUTOSTART
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.call(home)
