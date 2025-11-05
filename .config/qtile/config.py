@@ -32,6 +32,8 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile import hook
+import os
+import subprocess
 import colors
 
 mod = "mod4"
@@ -373,5 +375,5 @@ wmname = "LG3D"
 # AUTOSTART
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    home = os.path.expanduser('~/.dotfiles/.config/qtile/autostart.sh')
     subprocess.call(home)

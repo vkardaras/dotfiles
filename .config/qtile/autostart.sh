@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # picom &
-$HOME/.fehbg
-emacs --daemon &
+~/.fehbg
+# emacs --daemon &
