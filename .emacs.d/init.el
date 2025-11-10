@@ -37,9 +37,9 @@
 
 (electric-pair-mode 1)                   ; Turns on automatic parens pairing
 (global-auto-revert-mode t)              ; Automatically show changes if the file has changed
-;; (recentf-mode 1)
-;; (savehist-mode 1)
-;; (save-place-mode 1)
+(recentf-mode 1)
+(savehist-mode 1)
+(save-place-mode 1)
 (global-display-line-numbers-mode 1)     ; Display line numbers
 (setq display-line-numbers-type 'relative)
 (global-visual-line-mode t)              ; Enable truncated lines
@@ -249,13 +249,13 @@ The DWIM behaviour of this command is as follows:
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 
 ;;; Git programs
-(use-package git-timemachine
-  :after git-timemachine
-  :hook (evil-normalize-keymaps . git-timemachine-hook)
-  :config
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
-)
+;; (use-package git-timemachine
+;;   :after git-timemachine
+;;   :hook (evil-normalize-keymaps . git-timemachine-hook)
+;;   :config
+;;     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+;;     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+;; )
 (use-package magit)
 
 ;;; Key Bindings
@@ -265,23 +265,60 @@ The DWIM behaviour of this command is as follows:
   (interactive)
   (message "this is a test"))
 
+(defun open-init-file ()
+  "emacs init file"
+  (interactive)
+  (find-file (concat user-emacs-directory "init.el")))
+
+(defun open-emacs-dir ()
+  "open emacs directory"
+  (interactive)
+  (dired user-emacs-directory))
+
 ;; Define a sub-keymap
+(defvar-keymap vk-prefix-file-map
+  :doc "Switch to another buffer, or bookmarked file, or recently opened file"
+  "c" 'open-init-file
+  "d" 'find-grep-dired
+  "e" 'open-emacs-dir
+  "f" 'find-file
+  "g" 'consult-grep
+  "l" 'consult-line
+  "o" 'consult-outline
+  "r" 'consult-recent-file
+  "u" 'sudo-edit-find-file
+  "U" 'sudo-edit)
+
 (defvar-keymap vk-prefix-buffer-map
-  :doc "My prefix map for buffers"
-  "s" #'switch-to-buffer
-  "b" #'buffer-menu)
+  :doc "My prefix map for bookmarks and buffers"
+  "b" 'consult-buffer
+  "c" 'clone-indirect-buffer
+  "C" 'clone-indirect-buffer-other-window
+  "d" 'bookmark-delete
+  "i" 'ibuffer
+  "k" 'kill-current-buffer
+  "K" 'kill-some-buffers
+  "l" 'list-bookmarks
+  "m" 'bookmark-set
+  "n" 'next-buffer
+  "o" 'consult-outline
+  "p" 'previous-buffer
+  "r" 'revert-buffer
+  "R" 'rename-buffer
+  "s" 'basic-save-buffer
+  "S" 'save-some-buffers
+  "w" 'bookmark-save)
 
 (defvar-keymap vk-prefix-window-map
   :doc "My prefix map for windows and words"
-  "c" 'evil-window-delete
-  "n" 'evil-window-new
-  "s" 'evil-window-split
-  "v" 'evil-window-vsplit
-  "h" 'evil-window-left
-  "j" 'evil-window-down
-  "k" 'evil-window-up
-  "l" 'evil-window-right
-  "w" 'evil-window-next
+  "c" 'delete-window
+  "s" 'split-window-below
+  "v" 'split-window-right
+  "h" 'windmove-left
+  "j" 'windmove-down
+  "k" 'windmove-up
+  "l" 'windmove-right
+  "w" 'other-window
   "d" 'downcase-word
   "u" 'upcase-word
   "=" 'count-words)
@@ -289,8 +326,12 @@ The DWIM behaviour of this command is as follows:
 ;; Define a keymap
 (defvar-keymap my-test-prefix-map
   :doc "My prefix map"
-  "f" 'find-file
+  "." 'find-file
+  ;; "=" 'perspective-map
+  "TAB TAB" 'comment-line
+  "u" 'universal-argument
   "b" vk-prefix-buffer-map
+  "f" vk-prefix-file-map
   "w" vk-prefix-window-map
   "d" 'dired
   "h" help-map
@@ -302,5 +343,6 @@ The DWIM behaviour of this command is as follows:
 ;; Set value for sub-keymap in which key
 (which-key-add-keymap-based-replacements my-test-prefix-map
   "b" `("Buffer" . ,vk-prefix-buffer-map)
+  "f" `("File" . ,vk-prefix-file-map)
   "w" `("Window" . ,vk-prefix-window-map)
   "h" `("Help" . ,help-map))
