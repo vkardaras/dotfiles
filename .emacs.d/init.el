@@ -29,50 +29,36 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 ;;; Basic behaviour
-
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-
+;; Tab width
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+(delete-selection-mode 1)    ;; You can select text and delete it by typing.
 
 (electric-pair-mode 1)                   ; Turns on automatic parens pairing
 (global-auto-revert-mode t)              ; Automatically show changes if the file has changed
 (recentf-mode 1)
+;; Save what you enter into minibuffer prompts
+(setq history-length 10)
 (savehist-mode 1)
+;; Sane defaults
 (save-place-mode 1)
 (global-display-line-numbers-mode 1)     ; Display line numbers
 (setq display-line-numbers-type 'relative)
 (global-visual-line-mode t)              ; Enable truncated lines
-
 (setq inhibit-startup-screen t)
-
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
-(defun prot/keyboard-quit-dwim ()
-  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+;; Search and Replace
+;; Display a counter showing the number of the current and the other
+;; matches.  Place it before the prompt, though it can be after it.
+(setq isearch-lazy-count t)
+(setq lazy-count-prefix-format "(%s/%s) ")
+(setq lazy-count-suffix-format nil)
 
-The generic `keyboard-quit' does not do the expected thing when
-the minibuffer is open.  Whereas we want it to close the
-minibuffer, even without explicitly focusing it.
-
-The DWIM behaviour of this command is as follows:
-
-- When the region is active, disable it.
-- When a minibuffer is open, but not focused, close the minibuffer.
-- When the Completions buffer is selected, close it.
-- In every other case use the regular `keyboard-quit'."
-  (interactive)
-  (cond
-   ((region-active-p)
-    (keyboard-quit))
-   ((derived-mode-p 'completion-list-mode)
-    (delete-completion-window))
-   ((> (minibuffer-depth) 0)
-    (abort-recursive-edit))
-   (t
-    (keyboard-quit))))
-
-(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
+;; Make regular Isearch interpret the empty space as a regular
+;; expression that matches any character between the words you give
+;; it.
+(setq search-whitespace-regexp ".*?")
 
 ;; Fonts
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-11"))
@@ -109,11 +95,14 @@ The DWIM behaviour of this command is as follows:
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
-;;; Configure the minibuffer and completions
+;;; Configure the minibuffer and completions 
 
 (use-package vertico
   :ensure t
-  :hook (after-init . vertico-mode))
+  :hook
+  (after-init . vertico-mode)
+  :config
+  (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy))
 
 (use-package marginalia
   :ensure t
@@ -123,8 +112,10 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :config
   (setq completion-styles '(orderless basic))
-  (setq completion-category-defaults nil)
-  (setq completion-category-overrides nil))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil))
+  ;; (setq completion-category-defaults nil)
+  ;; (setq completion-category-overrides nil))
 
 (use-package consult)
 
@@ -141,21 +132,81 @@ The DWIM behaviour of this command is as follows:
   :hook (after-init . savehist-mode))
 
 (use-package corfu
-  :ensure t
-  :hook (after-init . global-corfu-mode)
-  :bind (:map corfu-map ("<tab>" . corfu-complete))
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.1)
+  (corfu-popupinfo-delay '(0.5 . 0.5))
+  (corfu-count 14)
+  (corfu-scroll-margin 4)
+  ;; Have Corfu wrap around when going up
+  (corfu-cycle t)
+  (corfu-preselect-first t)
+  (corfu-quit-at-boundary 'separator)
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  ;; Allow Corfu to show help text next to suggested completion
+  (corfu-popupinfo-mode)
   :config
-  (setq tab-always-indent 'complete)
-  (setq corfu-preview-current nil)
-  (setq corfu-min-width 20)
+  (add-hook 'eshell-mode-hook (lambda ()
+				(setq-local corfu-auto nil
+					    corfu-quit-at-boundary t
+					    corfu-quit-no-match t)
+				(corfu-mode))))
 
-  (setq corfu-popupinfo-delay '(1.25 . 0.5))
-  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+(use-package cape
+  :demand t
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
-  ;; Sort by input history (no need to modify `corfu-sort-function').
-  (with-eval-after-load 'savehist
-    (corfu-history-mode 1)
-    (add-to-list 'savehist-additional-variables 'corfu-history)))
+;;; Programming
+
+;; Project management
+(use-package project
+  :bind-keymap
+  (("C-c p" . project-prefix-map)))
+
+;; LSP
+(use-package lsp-mode
+  :custom
+  (lsp-completion-provider :none) ;; we use Corfu!
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex))) ;; Configure flex
+  :hook
+  (lsp-completion-mode . my/lsp-mode-setup-completion))
+(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+(use-package lsp-ui)
+(use-package consult-lsp)
+
+;; enable formatting on save
+(add-hook 'java-mode-hook #'lsp)
+(setq lsp-enable-on-type-formatting t)
+(setq lsp-java-format-on-type-enabled t)
+;; specify Google style
+(setq lsp-java-format-settings-url
+      "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml")
+(setq lsp-java-format-settings-profile "GoogleStyle")
+
+;; DAP
+(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package dap-java
+  :straight (lsp-java)
+  :config
+  (global-set-key (kbd "<f7>") 'dap-step-in)
+  (global-set-key (kbd "<f8>") 'dap-next)
+  (global-set-key (kbd "<f9>") 'dap-continue))
+(add-hook 'compilation-filter-hook
+          (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
+(use-package yasnippet :config (yas-global-mode))
 
 ;;; The file manager (Dired)
 
@@ -169,7 +220,11 @@ The DWIM behaviour of this command is as follows:
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always)
   (setq delete-by-moving-to-trash t)
-  (setq dired-dwim-target t))
+  (setq dired-dwim-target t)
+  (setq dired-guess-shell-alist-user
+      '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh *" "xdg-open")
+        ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv *" "xdg-open")
+		(".*" "xdg-open"))))
 
 (use-package dired-subtree
   :ensure t
@@ -181,7 +236,17 @@ The DWIM behaviour of this command is as follows:
     ("<backtab>" . dired-subtree-remove)
     ("S-TAB" . dired-subtree-remove))
   :config
-  (setq dired-subtree-use-backgrounds nil))
+  (setq dired-subtree-use-backgrounds nil)
+  ;; Refresh icons when inserting/removing subtree
+  (defun my/nerd-icons-dired-refresh-after-subtree (&rest _)
+    "Refresh `nerd-icons-dired` after expanding or collapsing subtrees."
+    (when nerd-icons-dired-mode
+      (nerd-icons-dired--refresh)))
+
+  (advice-add 'dired-subtree-insert :after #'my/nerd-icons-dired-refresh-after-subtree)
+  (advice-add 'dired-subtree-remove :after #'my/nerd-icons-dired-refresh-after-subtree))
+
+(use-package dired-preview)
 
 (use-package trashed
   :ensure t
@@ -191,6 +256,14 @@ The DWIM behaviour of this command is as follows:
   (setq trashed-use-header-line t)
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+;;; Org Mode
+(require 'org-tempo)
+(add-hook 'org-mode-hook (lambda ()
+           (setq-local electric-pair-inhibit-predicate
+                   `(lambda (c)
+                      (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;; Configure which key
 (use-package which-key
@@ -210,36 +283,21 @@ The DWIM behaviour of this command is as follows:
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
 
-;; ;;; Evil
-;; (use-package evil
-;;     :ensure t
-;;     :init      ;; tweak evil's configuration before loading it
-;;     (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-;;           evil-want-keybinding nil
-;;           evil-vsplit-window-right t
-;;           evil-split-window-below t
-;;           evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-;;     (evil-mode))
+;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Functions ;;
+;;;;;;;;;;;;;;;;;;;;;;
 
-;; (use-package evil-collection
-;;   :ensure t
-;;   :after evil
-;;   :config
-;;   ;; Do not uncomment this unless you want to specify each and every mode
-;;   ;; that evil-collection should works with.  The following line is here
-;;   ;; for documentation purposes in case you need it.
-;;   ;; (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer))
-;;   (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
-;;   (evil-collection-init))
+(defun new-line-above ()
+  "Add an empty line above and move the cursor to this line."
+  (interactive)
+  (back-to-indentation)
+  (split-line))
 
-;; ;; Using RETURN to follow links in Org/Evil
-;; ;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
-;; (with-eval-after-load 'evil-maps
-;;   (define-key evil-motion-state-map (kbd "SPC") nil)
-;;   (define-key evil-motion-state-map (kbd "RET") nil)
-;;   (define-key evil-motion-state-map (kbd "TAB") nil))
-;; ;; Setting RETURN key in org-mode to follow links
-;;   (setq org-return-follows-link  t)
+(defun new-line-below ()
+  "Add an empty line below and move the cursor tol to this line"
+  (interactive)
+  (end-of-visual-line)
+  (newline-and-indent))
 
 ;;; Keymaps
 ;; Global keymaps
@@ -247,6 +305,9 @@ The DWIM behaviour of this command is as follows:
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+(keymap-global-set "C-." 'completion-at-point)
+(keymap-global-set "C-o" 'new-line-below)
+(keymap-global-set "C-S-o" 'new-line-above)
 
 ;;; Git programs
 ;; (use-package git-timemachine
