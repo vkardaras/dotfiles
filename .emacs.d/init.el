@@ -44,6 +44,9 @@
 (save-place-mode 1)
 (global-display-line-numbers-mode 1)     ; Display line numbers
 (setq display-line-numbers-type 'relative)
+(dolist (mode '(vterm-mode-hook
+                term-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 (global-visual-line-mode t)              ; Enable truncated lines
 (setq inhibit-startup-screen t)
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
@@ -265,6 +268,56 @@
                       (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
+;;; Spelling
+;; flyspell
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode -1))))
+
+;; harper-ls
+;; (use-package eglot
+;;   :hook
+;;   (text-mode . eglot-ensure)
+;;   :config
+;;   (add-to-list 'eglot-server-programs
+;;                '(text-mode . ("harper-ls" "--stdio"))))
+
+;; Vterm
+(use-package vterm
+  :ensure t
+  :config
+  (setq shell-file-name "/bin/zsh"
+        vterm-max-scrollback 5000))
+
+(use-package vterm-toggle
+  :ensure t
+  :after vterm
+  :config
+  (setq vterm-toggle-fullscreen-p nil)
+  (setq vterm-toggle-scope 'project)
+  (add-to-list 'display-buffer-alist
+               '((lambda (buffer-or-name _)
+                     (let ((buffer (get-buffer buffer-or-name)))
+                       (with-current-buffer buffer
+                         (or (equal major-mode 'vterm-mode)
+                             (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                  (display-buffer-reuse-window display-buffer-at-bottom)
+                  ;;(display-buffer-reuse-window display-buffer-in-direction)
+                  ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                  ;;(direction . bottom)
+                  ;;(dedicated . t) ;dedicated is supported in emacs27
+                  (reusable-frames . visible)
+                  (window-height . 0.3))))
+
+;; Terraform
+(use-package terraform-mode
+  :custom (terraform-indent-level 4)
+  :config
+  (defun my-terraform-mode-init ()
+    (outline-minor-mode 1))
+  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))   
+
 ;; Configure which key
 (use-package which-key
   :init
@@ -384,6 +437,11 @@
   "u" 'upcase-word
   "=" 'count-words)
 
+(defvar-keymap vk-prefix-toggle-map
+  :doc "My prefix map for toggle various windows"
+  "v" 'vterm-toggle
+  "t" 'test-command)
+
 ;; Define a keymap
 (defvar-keymap my-test-prefix-map
   :doc "My prefix map"
@@ -396,10 +454,16 @@
   "w" vk-prefix-window-map
   "d" 'dired
   "h" help-map
-  "t" 'test-command)
+  "t" vk-prefix-toggle-map)
 
 ;; Define a key binding
-(keymap-set global-map "C-SPC" my-test-prefix-map)
+;;(with-eval-after-load 'flyspell
+;;  (keymap-set global-map "C-;" nil))
+;;(keymap-set global-map "C-;" my-test-prefix-map)
+
+(with-eval-after-load 'flyspell
+  (define-key flyspell-mode-map (kbd "C-;") nil))
+(global-set-key (kbd "C-;") my-test-prefix-map)
 
 ;; Set value for sub-keymap in which key
 (which-key-add-keymap-based-replacements my-test-prefix-map
