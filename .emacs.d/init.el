@@ -181,11 +181,14 @@
   :custom
   (lsp-completion-provider :none) ;; we use Corfu!
   :init
+  (setq lsp-keymap-prefix "C-c l")
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex))) ;; Configure flex
   :hook
-  (lsp-completion-mode . my/lsp-mode-setup-completion))
+  ((lsp-mode . lsp-enable-which-key-integration)
+   (lsp-completion-mode . my/lsp-mode-setup-completion)
+  ))
 (use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
 (use-package lsp-ui)
 (use-package consult-lsp)
@@ -267,6 +270,9 @@
                    `(lambda (c)
                       (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 (add-hook 'org-mode-hook 'org-indent-mode)
+
+;; eneble syntax highlighting
+(setq org-src-fontify-natively t)
 
 ;;; Spelling
 ;; flyspell
