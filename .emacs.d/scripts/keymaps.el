@@ -98,6 +98,10 @@
   "j" 'windmove-down
   "k" 'windmove-up
   "l" 'windmove-right
+  "H" 'windmove-swap-states-left
+  "J" 'windmove-swap-states-down
+  "K" 'windmove-swap-states-up
+  "L" 'windmove-swap-states-right
   "w" 'other-window
   "d" 'downcase-word
   "u" 'upcase-word

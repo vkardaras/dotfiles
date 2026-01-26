@@ -34,6 +34,7 @@
 ;; DAP
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package dap-java
+  :ensure nil
   :config
   (global-set-key (kbd "<f7>") 'dap-step-in)
   (global-set-key (kbd "<f8>") 'dap-next)

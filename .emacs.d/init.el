@@ -100,6 +100,7 @@
 
 (use-package treemacs-nerd-icons
   :config
+  (setq treemacs-project-follow-mode t)
   (treemacs-nerd-icons-config))
 
 ;;; Configure the minibuffer and completions 
@@ -282,7 +283,9 @@
   :config
   (defun my-terraform-mode-init ()
     (outline-minor-mode 1))
-  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))   
+  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
+
+(use-package yaml-mode)
 
 
 (add-to-list 'load-path "~/.emacs.d/scripts/")
