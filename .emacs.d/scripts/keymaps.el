@@ -127,14 +127,7 @@
   "h" help-map
   "t" vk-prefix-toggle-map)
 
-;; Define a key binding
-;;(with-eval-after-load 'flyspell
-;;  (keymap-set global-map "C-;" nil))
-;;(keymap-set global-map "C-;" my-test-prefix-map)
-
-(with-eval-after-load 'flyspell
-  (define-key flyspell-mode-map (kbd "C-;") nil))
-(global-set-key (kbd "C-;") my-test-prefix-map)
+(global-set-key (kbd "M-;") my-test-prefix-map)
 
 ;; Set value for sub-keymap in which key
 (which-key-add-keymap-based-replacements my-test-prefix-map
