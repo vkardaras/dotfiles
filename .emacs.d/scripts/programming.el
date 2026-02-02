@@ -47,4 +47,16 @@
 ;; Magit
 (use-package magit)
 
+(use-package eglot
+  :config
+  (setq eglot-events-buffer-size 0
+        eglot-ignored-server-capabilities '(:inlayHintProvider)
+        eglot-confirm-server-initiated-edits nil))
+
+(use-package rustic
+  :config
+  ; Tell rustic where to find the cargo binary
+  (setq rustic-cargo-bin-remote "/usr/local/cargo/bin/cargo")
+  (setq rustic-lsp-client 'eglot))
+
 (provide 'programming)
