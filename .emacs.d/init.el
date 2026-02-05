@@ -50,6 +50,7 @@
 (global-visual-line-mode t)              ; Enable truncated lines
 (setq inhibit-startup-screen t)
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+(xterm-mouse-mode 1)
 
 ;; Search and Replace
 ;; Display a counter showing the number of the current and the other
@@ -286,10 +287,9 @@
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
 (use-package yaml-mode)
-(xterm-mouse-mode 1)
 
-(Add-to-list 'load-path "~/.emacs.d/scripts/")
+(add-to-list 'load-path "~/.emacs.d/scripts/")
 
+(require 'keymaps)
 (require 'programming)
 (require 'my-custom-functions)
-(require 'keymaps)
