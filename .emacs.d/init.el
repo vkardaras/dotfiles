@@ -287,9 +287,10 @@
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
 (use-package yaml-mode)
+(use-package groovy-mode)
 
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
-(require 'keymaps)
 (require 'programming)
 (require 'my-custom-functions)
+(require 'keymaps)
