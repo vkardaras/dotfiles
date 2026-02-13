@@ -103,6 +103,8 @@
   :config
   (setq treemacs-project-follow-mode t)
   (treemacs-nerd-icons-config))
+(treemacs-follow-mode t)
+(treemacs-project-follow-mode t)
 
 ;;; Configure the minibuffer and completions 
 
