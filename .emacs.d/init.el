@@ -52,6 +52,10 @@
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 (xterm-mouse-mode 1)
 
+;; copy paste
+(use-package clipetty
+  :bind ("M-w" . clipetty-kill-ring-save))
+
 ;; Search and Replace
 ;; Display a counter showing the number of the current and the other
 ;; matches.  Place it before the prompt, though it can be after it.
@@ -227,7 +231,13 @@
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
+;; Verb
+(use-package verb)
+
 ;;; Org Mode
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 (require 'org-tempo)
 (add-hook 'org-mode-hook (lambda ()
            (setq-local electric-pair-inhibit-predicate
