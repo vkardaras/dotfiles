@@ -81,6 +81,9 @@
   :config
   (load-theme 'modus-vivendi-tinted :no-confirm-loading))
 
+(use-package rainbow-mode
+  :hook (emacs-lisp-mode text-mode lisp-mode))
+
 ;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
 ;; font files.  Then restart Emacs to see the effect.
 (use-package nerd-icons

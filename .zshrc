@@ -19,10 +19,9 @@ export PATH="$HOME/doom_emacs/bin:$PATH"
 [ -f "${XDG_CONFIG_HOME}/zsh/optionrc" ] && source "${XDG_CONFIG_HOME}/zsh/optionrc"
 
 # plugins
-source "${XDG_CONFIG_HOME}/zsh/plugins/f-sy-h/F-Sy-H.plugin.zsh" 
-source "${XDG_CONFIG_HOME}/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 
-source "${XDG_CONFIG_HOME}/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" 
-source "${XDG_CONFIG_HOME}/zsh/plugins/.zsh-vi-mode/zsh-vi-mode.plugin.zsh" 
+source "${XDG_CONFIG_HOME}/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "${XDG_CONFIG_HOME}/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" 
+source "${XDG_CONFIG_HOME}/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh" 
 
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
