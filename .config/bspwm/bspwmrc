@@ -4,21 +4,24 @@
 sxhkd &
 # picom --config $HOME/.config/picom/picom.conf &
 dunst &
-polybar &
 ~/.fehbg &
 redshift -l 37.9637676:23.7275817 &
 
-bspc monitor -d I II III IV V VI VII VIII IX X
+bspc monitor eDP-1 -d 1 2 3 4 5
+bspc monitor HDMI-1 -d 6 7 8 9 10
+polybar &
+# bspc monitor -d I II III IV V VI VII VIII IX X
 # bspc monitor HDMI1 -d HDMI
 
 bspc config border_width         2
-bspc config window_gap           2
+bspc config window_gap           1
 
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 # bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Emacs state=tiled
 bspc rule -a brave-browser desktop='^1'
 # bspc rule -a mplayer2 state=floating
 # bspc rule -a Kupfer.py focus=on

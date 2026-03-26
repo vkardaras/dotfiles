@@ -16,14 +16,6 @@ super + a
 super + shift + a
 	rofi -show window -theme material
 
-# file manager
-super + e
-    thunar
-
-# open display desktop
-super + p
-    arandr
-
 # decrease brightness
 super + i
     brightnessctl set 3%-
