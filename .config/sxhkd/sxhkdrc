@@ -9,7 +9,9 @@ super + Return
 # program launcher
 
 # open rofi
-# super + @space
+super + @space
+    ~/scripts/toggle_layout.sh
+
 super + a
 	rofi -show drun -theme material
 
