@@ -7,12 +7,21 @@ dunst &
 ~/.fehbg &
 redshift -l 37.9637676:23.7275817 &
 
+if [[ $(xrandr -q | grep 'HDMI-1 connected') && $(xrandr -q | grep 'eDP-1 connected')]]; then
+    xrandar home
+    bspc monitor HDMI-1 -d 1 2 3 4 5
+    bspc monitor eDP-1 -d 6 7 8 9 10
+elif [[ $(xrandr -q | grep 'HDMI-1 connected') && $(xrandr -q | grep 'eDP-3 connected')]]; then
+    xrandar work
+    bspc monitor HDMI-1 -d 1 2 3 4 5
+    bspc monitor eDP-1 -d 6 7 8 9 10
+else
+    bspc monitor -d 1 2 3 4 5
+fi
 # bspc monitor DP-3 -d 1 2 3 4 5
-bspc monitor HDMI-1 -d 1 2 3 4 5
-bspc monitor eDP-1 -d 6 7 8 9 10
-polybar &
 # bspc monitor -d I II III IV V VI VII VIII IX X
 # bspc monitor HDMI1 -d HDMI
+polybar &
 
 bspc config border_width         2
 bspc config window_gap           1
