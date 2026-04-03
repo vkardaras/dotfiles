@@ -1,4 +1,4 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:4300
-SETUVAR fish_user_paths:/home/vkardaras/go/bin
+SETUVAR fish_user_paths:/opt/idea\x2dIU\x2d253\x2e32098\x2e37/bin\x1e/home/vkardaras/go/bin

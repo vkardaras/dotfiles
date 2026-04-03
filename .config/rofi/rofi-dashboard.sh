@@ -72,7 +72,7 @@ case "$choice" in
         case "$pow" in
             "⏻ Shutdown") systemctl poweroff ;;
             "🔄 Reboot") systemctl reboot ;;
-            "🔒 Lock") i3lock ;;
+            "🔒 Lock") i3lock -c 000000 ;;
         esac
         ;;
 esac
