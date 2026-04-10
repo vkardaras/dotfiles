@@ -1,5 +1,19 @@
 #! /bin/sh
 
+# Autostart applications
+sxhkd &
+redshift -l 37.9637676:23.7275817 &
+# picom --config $HOME/.config/picom/picom.conf &
+dunst &
+polybar &
+# Start audio stack
+# pipewire &
+# wireplumber &
+
+# Bluetooth tray
+# blueman-applet &
+
+
 # ~/.fehbg &
 # blueman-applet &
 # setxkbmap -layout us,gr -option grp:alt_space_toggle &
@@ -39,9 +53,3 @@ bspc rule -a brave-browser desktop='^1'
 # bspc rule -a Kupfer.py focus=on
 # bspc rule -a Screenkey manage=off
 
-#Autostart applications
-sxhkd &
-redshift -l 37.9637676:23.7275817 &
-# picom --config $HOME/.config/picom/picom.conf &
-dunst &
-polybar &

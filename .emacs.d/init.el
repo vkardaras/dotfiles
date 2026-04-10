@@ -95,11 +95,11 @@
   :config
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-(use-package nerd-icons-corfu
-  :ensure t
-  :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+;; (use-package nerd-icons-corfu
+;;   :ensure t
+;;   :after corfu
+;;   :config
+;;   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -149,32 +149,32 @@
   :ensure nil ; it is built-in
   :hook (after-init . savehist-mode))
 
-(use-package corfu
-  :custom
-  (corfu-auto t)
-  (corfu-auto-delay 0.1)
-  (corfu-popupinfo-delay '(0.5 . 0.5))
-  (corfu-count 14)
-  (corfu-scroll-margin 4)
-  ;; Have Corfu wrap around when going up
-  (corfu-cycle t)
-  (corfu-preselect-first t)
-  (corfu-quit-at-boundary 'separator)
-  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-  :init
-  (global-corfu-mode)
-  (corfu-history-mode)
-  ;; Allow Corfu to show help text next to suggested completion
-  (corfu-popupinfo-mode)
-  :config
-  (add-hook 'eshell-mode-hook (lambda ()
-				(setq-local corfu-auto nil
-					    corfu-quit-at-boundary t
-					    corfu-quit-no-match t)
-				(corfu-mode))))
+;; (use-package corfu
+;;   :custom
+;;   (corfu-auto t)
+;;   (corfu-auto-delay 0.1)
+;;   (corfu-popupinfo-delay '(0.5 . 0.5))
+;;   (corfu-count 14)
+;;   (corfu-scroll-margin 4)
+;;   ;; Have Corfu wrap around when going up
+;;   (corfu-cycle t)
+;;   (corfu-preselect-first t)
+;;   (corfu-quit-at-boundary 'separator)
+;;   ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+;;   ;; :hook ((prog-mode . corfu-mode)
+;;   ;;        (shell-mode . corfu-mode)
+;;   ;;        (eshell-mode . corfu-mode))
+;;   :init
+;;   (global-corfu-mode)
+;;   (corfu-history-mode)
+;;   ;; Allow Corfu to show help text next to suggested completion
+;;   (corfu-popupinfo-mode)
+;;   :config
+;;   (add-hook 'eshell-mode-hook (lambda ()
+;; 				(setq-local corfu-auto nil
+;; 					    corfu-quit-at-boundary t
+;; 					    corfu-quit-no-match t)
+;; 				(corfu-mode))))
 
 (use-package cape
   :demand t
