@@ -306,6 +306,14 @@
 (use-package dotenv-mode) ; unless installed from a package
 (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;; for optionally supporting additional file extensions such as `.env.test' with this major mode
 
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+         ("C-c C-e" . markdown-do)))
+(setq markdown-command "/usr/bin/pandoc")
+
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
 (require 'programming)
