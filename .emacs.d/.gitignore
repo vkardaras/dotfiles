@@ -5,6 +5,7 @@ auto-save-list/
 eclipse.jdt.ls/
 eln-cache/
 elpa/
+multisession/
 tldr/
 transient/
 url/
@@ -19,6 +20,7 @@ workspace/
 tramp
 bookmarks
 history
+ielm-history.eld
 init.el.back
 places
 projects

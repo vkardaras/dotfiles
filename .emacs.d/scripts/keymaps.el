@@ -1,24 +1,6 @@
 
 ;;; Keymaps
 
-;; Configure which key
-(use-package which-key
-  :init
-    (which-key-mode 1)
-  :config
-  (setq which-key-side-window-location 'bottom
-	  which-key-sort-order #'which-key-key-order-alpha
-	  which-key-sort-uppercase-first nil
-	  which-key-add-column-padding 1
-	  which-key-max-display-columns nil
-	  which-key-min-display-lines 6
-	  which-key-side-window-slot -10
-	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.3
-	  which-key-max-description-length 25
-	  which-key-allow-imprecise-window-fit nil
-	  which-key-separator " → " ))
-
 ;; Global keymaps
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -27,16 +9,6 @@
 (keymap-global-set "C-." 'completion-at-point)
 (keymap-global-set "C-o" 'new-line-below)
 (keymap-global-set "C-S-o" 'new-line-above)
-
-;;; Git programs
-;; (use-package git-timemachine
-;;   :after git-timemachine
-;;   :hook (evil-normalize-keymaps . git-timemachine-hook)
-;;   :config
-;;     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-;;     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
-;; )
-(use-package magit)
 
 ;;; Key Bindings
 
@@ -136,4 +108,4 @@
   "w" `("Window" . ,vk-prefix-window-map)
   "h" `("Help" . ,help-map))
 
-(provide 'keymaps.el)
+(provide 'keymaps)

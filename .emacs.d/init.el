@@ -95,11 +95,11 @@
   :config
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-;; (use-package nerd-icons-corfu
-;;   :ensure t
-;;   :after corfu
-;;   :config
-;;   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -129,11 +129,10 @@
 (use-package orderless
   :ensure t
   :config
-  (setq completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil))
-  ;; (setq completion-category-defaults nil)
-  ;; (setq completion-category-overrides nil))
+  (setq completion-styles '(orderless partial-completion basic)
+        completion-category-defaults nil
+        completion-category-overrides nil))
+;;  (completion-category-overrides '((file (styles partial-completion))))
 
 (use-package consult)
 
@@ -149,32 +148,32 @@
   :ensure nil ; it is built-in
   :hook (after-init . savehist-mode))
 
-;; (use-package corfu
-;;   :custom
-;;   (corfu-auto t)
-;;   (corfu-auto-delay 0.1)
-;;   (corfu-popupinfo-delay '(0.5 . 0.5))
-;;   (corfu-count 14)
-;;   (corfu-scroll-margin 4)
-;;   ;; Have Corfu wrap around when going up
-;;   (corfu-cycle t)
-;;   (corfu-preselect-first t)
-;;   (corfu-quit-at-boundary 'separator)
-;;   ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-;;   ;; :hook ((prog-mode . corfu-mode)
-;;   ;;        (shell-mode . corfu-mode)
-;;   ;;        (eshell-mode . corfu-mode))
-;;   :init
-;;   (global-corfu-mode)
-;;   (corfu-history-mode)
-;;   ;; Allow Corfu to show help text next to suggested completion
-;;   (corfu-popupinfo-mode)
-;;   :config
-;;   (add-hook 'eshell-mode-hook (lambda ()
-;; 				(setq-local corfu-auto nil
-;; 					    corfu-quit-at-boundary t
-;; 					    corfu-quit-no-match t)
-;; 				(corfu-mode))))
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.1)
+  (corfu-popupinfo-delay '(0.5 . 0.5))
+  (corfu-count 14)
+  (corfu-scroll-margin 4)
+  ;; Have Corfu wrap around when going up
+  (corfu-cycle t)
+  (corfu-preselect-first t)
+  (corfu-quit-at-boundary 'separator)
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  ;; Allow Corfu to show help text next to suggested completion
+  (corfu-popupinfo-mode)
+  :config
+  (add-hook 'eshell-mode-hook (lambda ()
+				(setq-local corfu-auto nil
+					    corfu-quit-at-boundary t
+					    corfu-quit-no-match t)
+				(corfu-mode))))
 
 (use-package cape
   :demand t
@@ -314,8 +313,26 @@
          ("C-c C-e" . markdown-do)))
 (setq markdown-command "/usr/bin/pandoc")
 
+;; Configure which key
+(use-package which-key
+  :init
+    (which-key-mode 1)
+  :config
+  (setq which-key-side-window-location 'bottom
+	  which-key-sort-order #'which-key-key-order-alpha
+	  which-key-sort-uppercase-first nil
+	  which-key-add-column-padding 1
+	  which-key-max-display-columns nil
+	  which-key-min-display-lines 6
+	  which-key-side-window-slot -10
+	  which-key-side-window-max-height 0.25
+	  which-key-idle-delay 0.3
+	  which-key-max-description-length 25
+	  which-key-allow-imprecise-window-fit nil
+	  which-key-separator " → " ))
+
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
-(require 'programming)
 (require 'my-custom-functions)
 (require 'keymaps)
+(require 'programming)
