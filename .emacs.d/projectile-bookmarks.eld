@@ -1,1 +1,1 @@
-("~/Documents/dev/spring/demo/" "~/.dotfiles/" "~/Documents/dev/spring/tickets/")
+("~/.dotfiles/" "~/Documents/dev/spring/demo/" "~/Pictures/wallpaper/" "~/Documents/dev/spring/tickets/")
