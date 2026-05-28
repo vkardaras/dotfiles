@@ -43,19 +43,19 @@
 
 (use-package lsp-treemacs)
 
-;; (add-hook 'compilation-filter-hook
-;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook
+          (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
 ;; (use-package consult-lsp)
 
-;; ;; enable formatting on save
-;; (add-hook 'java-mode-hook #'lsp)
-;; (setq lsp-enable-on-type-formatting t)
-;; (setq lsp-java-format-on-type-enabled t)
-;; ;; specify Google style
-;; (setq lsp-java-format-settings-url
-;;       "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml")
-;; (setq lsp-java-format-settings-profile "GoogleStyle")
+;; enable formatting on save
+(add-hook 'java-mode-hook #'lsp)
+(setq lsp-enable-on-type-formatting t)
+(setq lsp-java-format-on-type-enabled t)
+;; specify Google style
+(setq lsp-java-format-settings-url
+      "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml")
+(setq lsp-java-format-settings-profile "GoogleStyle")
 
 ;; Magit
 (use-package magit)
