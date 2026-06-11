@@ -1,1 +1,0 @@
-("~/.dotfiles/" "~/Documents/dev/spring/demo/" "~/Pictures/wallpaper/" "~/Documents/dev/spring/tickets/")
