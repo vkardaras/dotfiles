@@ -1,0 +1,4 @@
+#+title: Sway dependencies
+
+* Programs to install
+- inotify-tools
