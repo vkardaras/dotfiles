@@ -1,7 +1,7 @@
 for_window [title=".*"] opacity 1
 
 default_border pixel 1
-exec swayidle -l 38.044323 -L 23.7230595
+exec wlsunset -l 38.0639 -L 23.7035
 
 # Default config for sway
 #
@@ -22,6 +22,7 @@ set $right l
 set $term kitty
 # Your preferred application launcher
 set $menu rofi -show drun -theme material
+set $power ~/.config/rofi/powermenu.sh
 
 ### Output configuration
 #
@@ -66,9 +67,8 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #   }
 #
   input type:keyboard {
-      xkb_layout "us,gr"
-      xkb_variant ,nodeadkeys
-      xkb_options grp:alt_shift_toggle
+      xkb_layout us,gr
+      xkb_options grp:win_space_toggle
   }
 #
 # You can also configure each device individually.
@@ -86,6 +86,9 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+
+    # Start power menu
+    bindsym $mod+p exec $power
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -137,6 +140,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+8 workspace number 8
     bindsym $mod+9 workspace number 9
     bindsym $mod+0 workspace number 10
+    bindsym $mod+n workspace next
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -232,6 +236,10 @@ bindsym $mod+Alt+F7 exec "swaymsg opacity minus 0.01"
 # app shortcuts
 bindsym $mod+Alt+e exec thunar
 bindsym $mod+Alt+b exec brave
+# Save selected area
+bindsym $mod+Shift+s exec grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%F-%T).png
+# Save full screen
+bindsym $mod+Shift+f exec grim ~/Pictures/screenshot-$(date +%F-%T).png   
 
 #
 # Status Bar:

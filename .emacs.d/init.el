@@ -52,6 +52,10 @@
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 (xterm-mouse-mode 1)
 
+;; images
+(setq org-startup-with-inline-images t)
+(setq org-image-actual-width (/ (display-pixel-width) 2))
+
 ;; copy paste
 (use-package clipetty
   :bind ("M-w" . clipetty-kill-ring-save))
@@ -247,6 +251,19 @@
                       (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
+(use-package org-modern
+  :hook (after-init . global-org-modern-mode))
+
+(use-package ob-mermaid)
+(setq ob-mermaid-cli-path "mmdc")
+
+(setq org-startup-with-inline-images t)
+
+;; (use-package phscroll
+;;   :hook (after-init . org-phscroll-mode)
+;;   :config
+;;   (setq org-startup-truncated nil))
+
 ;; eneble syntax highlighting
 (setq org-src-fontify-natively t)
 
@@ -312,6 +329,37 @@
   :bind (:map markdown-mode-map
          ("C-c C-e" . markdown-do)))
 (setq markdown-command "/usr/bin/pandoc")
+
+;; Latex
+(use-package pdf-tools
+  :config
+  (pdf-tools-install))
+
+(use-package tex
+  :ensure nil
+  :hook
+  (LaTeX-mode . TeX-PDF-mode)
+  (LaTeX-mode . turn-on-reftex)
+  :config
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-source-correlate-mode t
+        TeX-source-correlate-start-server t
+        TeX-command-default "LatexMk")
+
+  (add-to-list 'TeX-command-list
+               '("LatexMk"
+                 "latexmk -pdf -synctex=1 -interaction=nonstopmode %s"
+                 TeX-run-TeX
+                 nil
+                 t))
+
+  (setq TeX-view-program-selection
+        '((output-pdf "PDF Tools"))))
+
+(use-package auctex
+  :ensure t
+  :defer t)
 
 ;; Configure which key
 (use-package which-key
