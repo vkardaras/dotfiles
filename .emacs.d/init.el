@@ -11,9 +11,9 @@
 ;;; Set up the package manager
 
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
 (when (< emacs-major-version 29)
   (unless (package-installed-p 'use-package)
@@ -79,6 +79,7 @@
 (set-face-attribute 'font-lock-keyword-face nil
   :slant 'italic)
 (setq-default line-spacing 0.12)
+(setq org-hide-emphasis-markers t)   
 
 (use-package modus-themes
   :ensure t
@@ -266,6 +267,13 @@
 
 ;; eneble syntax highlighting
 (setq org-src-fontify-natively t)
+
+(setq org-src-fontify-natively t)
+
+(setq org-src-lang-modes
+      '(("typescript" . typescript-ts)
+        ("ts" . typescript-ts)
+        ("tsx" . tsx-ts)))
 
 ;;; Spelling
 ;; flyspell
