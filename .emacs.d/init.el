@@ -343,6 +343,8 @@
   :config
   (pdf-tools-install))
 
+(add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
+
 (use-package tex
   :ensure nil
   :hook
