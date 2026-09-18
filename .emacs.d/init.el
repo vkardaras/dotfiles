@@ -52,10 +52,6 @@
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 (xterm-mouse-mode 1)
 
-;; images
-(setq org-startup-with-inline-images t)
-(setq org-image-actual-width (/ (display-pixel-width) 2))
-
 ;; copy paste
 (use-package clipetty
   :bind ("M-w" . clipetty-kill-ring-save))
@@ -258,7 +254,9 @@
 (use-package ob-mermaid)
 (setq ob-mermaid-cli-path "mmdc")
 
+;; images
 (setq org-startup-with-inline-images t)
+(setq org-image-actual-width (/ (display-pixel-width) 2))
 
 ;; (use-package phscroll
 ;;   :hook (after-init . org-phscroll-mode)
@@ -268,12 +266,20 @@
 ;; eneble syntax highlighting
 (setq org-src-fontify-natively t)
 
-(setq org-src-fontify-natively t)
-
 (setq org-src-lang-modes
       '(("typescript" . typescript-ts)
         ("ts" . typescript-ts)
         ("tsx" . tsx-ts)))
+
+;; Org babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+
+(setq org-babel-default-header-args:python
+      '((:results . "output")))
+
+(setq org-confirm-babel-evaluate nil)
 
 ;;; Spelling
 ;; flyspell
@@ -324,6 +330,11 @@
   (defun my-terraform-mode-init ()
     (outline-minor-mode 1))
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
+
+(use-package python
+  :ensure nil
+  :custom
+  (python-indent-offset 2))
 
 (use-package yaml-mode)
 (use-package groovy-mode)
